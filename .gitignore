@@ -2,6 +2,7 @@ bin/
 obj/
 .vs/
 
+*.bat
 *.beam
 *.bin
 *.dump
@@ -11,4 +12,3 @@ obj/
 *.zip
 
 rabbitmq_server*/
-rmq/
