@@ -64,10 +64,11 @@ for ($i = 0; $i -lt 3; $i++)
     {
         $rmq_node_port = 5672 + $i
         Write-Host "[INFO] configuring server '$rmq_node_name'"
-        Remove-Item -Verbose -Recurse -Force "$rmq_base_data_dir\$rmq_node_name*"
+        Remove-Item -Recurse -Force "$rmq_base_data_dir\$rmq_node_name*"
         $rmq_conf_in = Join-Path -Path $rmq_base -ChildPath 'rabbitmq.conf.in'
         $rmq_conf_out = Join-Path -Path $rmq_base -ChildPath 'rabbitmq.conf'
-        (Get-Content -Raw -Path $rmq_conf_in) -Replace '@@CURDIR@@', $curdir_with_slashes | Set-Content -Path $rmq_conf_out
+        (Get-Content -Raw -Path $rmq_conf_in) -Replace '@@CURDIR@@', $curdir_with_slashes `
+            -Replace '@@COMPUTERNAME@@', $env:COMPUTERNAME | Set-Content -Path $rmq_conf_out
         Run-RabbitMQ -RmqServerCmd $rmq_server_cmd `
             -NodeName $rmq_node_name -NodePort $rmq_node_port -Config $rmq_conf_out
     }
