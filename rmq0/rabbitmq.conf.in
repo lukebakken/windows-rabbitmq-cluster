@@ -9,9 +9,9 @@ log.exchange = false
 log.exchange.level = info
 
 cluster_formation.peer_discovery_backend = classic_config
-cluster_formation.classic_config.nodes.0 = rmq0@@@COMPUTERNAME@@
-cluster_formation.classic_config.nodes.1 = rmq1@@@COMPUTERNAME@@
-cluster_formation.classic_config.nodes.2 = rmq2@@@COMPUTERNAME@@
+cluster_formation.classic_config.nodes.0 = rmq0
+cluster_formation.classic_config.nodes.1 = rmq1
+cluster_formation.classic_config.nodes.2 = rmq2
 
 listeners.tcp.default = 5672
 listeners.ssl.default = 5771
