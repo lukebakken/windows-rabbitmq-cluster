@@ -29,28 +29,27 @@ if (!(Test-Path -Path $rmq_dir))
 Function Run-RabbitMQ
 {
     Param(
-        [string]$RmqServerCmd='rabbitmq-server.bat',
+        [string]$ServerCmd='rabbitmq-server.bat',
         [string]$NodeName='rmq0',
         [int]$NodePort=5672,
-        [string]$Config="$curdir\rmq0\rabbitmq.conf"
+        [string]$Config="$curdir\rmq0\rabbitmq.conf",
+        [string]$ConfEnvFile="$curdir\rmq0\rabbitmq-env-conf.bat"
     )
 
     $jobArgs = @{
-        ArgumentList = $RmqServerCmd, $NodeName, $NodePort, $Config
+        ArgumentList = $ServerCmd, $NodeName, $NodePort, $Config, $ConfEnvFile
         ScriptBlock = {
-            param([string]$rmq_server_cmd, [string]$node_name, [int]$node_port, [string]$cfg)
-
+            param([string]$rmq_server_cmd, [string]$node_name, [int]$node_port, [string]$cfg, [string]$conf_env_file)
             Remove-Item -ErrorAction SilentlyContinue -Verbose env:\LOG
-
+            $env:RABBITMQ_CONF_ENV_FILE = $conf_env_file
             $env:RABBITMQ_CONFIG_FILE = $cfg
             $env:RABBITMQ_NODENAME = $node_name
             $env:RABBITMQ_NODE_PORT = $node_port
             $env:LOG = 'debug'
-
-            Write-Host "[INFO] running", $rmq_server_cmd
             & "$rmq_server_cmd"
         }
     }
+
     Start-Job -Verbose @jobArgs
 }
 
@@ -75,23 +74,24 @@ for ($i = 0; $i -lt 3; $i++)
         $inter_node_tls_conf_out = Join-Path -Path $rmq_base -ChildPath 'inter_node_tls.config'
         $rmq_env_conf_bat_out = Join-Path -Path $rmq_base -ChildPath 'rabbitmq-env-conf.bat'
 
-        (Get-Content -Raw -Path $rmq_conf_in) -Replace '@@CURDIR@@', $curdir_with_slashes `
-            -Replace '@@COMPUTERNAME@@', $env:COMPUTERNAME | Set-Content -Path $rmq_conf_out
+        (Get-Content -Raw -LiteralPath $rmq_conf_in) -Replace '@@CURDIR@@', $curdir_with_slashes `
+            -Replace '@@COMPUTERNAME@@', $env:COMPUTERNAME | Set-Content -LiteralPath $rmq_conf_out
 
-        (Get-Content -Raw -Path $inter_node_tls_conf_in) -Replace '@@CURDIR@@', $curdir_with_slashes `
-            | Set-Content -Path $inter_node_tls_conf_out
+        (Get-Content -Raw -LiteralPath $inter_node_tls_conf_in) -Replace '@@CURDIR@@', $curdir_with_slashes `
+            | Set-Content -LiteralPath $inter_node_tls_conf_out
 
-        (Get-Content -Raw -Path $rmq_env_conf_bat_in) -Replace '@@CURDIR@@', $curdir_with_slashes `
+        (Get-Content -Raw -LiteralPath $rmq_env_conf_bat_in) -Replace '@@CURDIR@@', $curdir_with_slashes `
             -Replace '@@ERL_SSL_PATH@@', $erl_ssl_path `
-            -Replace '@@NODENAME@@', $rmq_node_name | Set-Content -Path $rmq_env_conf_bat_out
+            -Replace '@@NODENAME@@', $rmq_node_name | Set-Content -LiteralPath $rmq_env_conf_bat_out
 
-        # Run-RabbitMQ -RmqServerCmd $rmq_server_cmd `
-        #    -NodeName $rmq_node_name -NodePort $rmq_node_port -Config $rmq_conf_out
+        Run-RabbitMQ -ServerCmd $rmq_server_cmd `
+            -NodeName $rmq_node_name `
+            -NodePort $rmq_node_port `
+            -Config $rmq_conf_out `
+            -ConfEnvFile $rmq_env_conf_bat_out
     }
     else
     {
         throw "[ERROR] could not find path '$rmq_base'"
     }
 }
-
-Get-Job | Receive-Job
