@@ -14,10 +14,10 @@ cluster_formation.classic_config.nodes.1 = rabbit@rmq1
 cluster_formation.classic_config.nodes.2 = rabbit@rmq2
 
 listeners.tcp.default = 5672
-listeners.ssl.default = 5671
+listeners.ssl.default = 5771
 
 management.tcp.port = 15672
-management.ssl.port = 15671
+management.ssl.port = 15771
 
 management.ssl.certfile   = @@CURDIR@@/certs/server_rmq0_certificate.pem
 management.ssl.keyfile    = @@CURDIR@@/certs/server_rmq0_key.pem

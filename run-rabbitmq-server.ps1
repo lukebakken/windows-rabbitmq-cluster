@@ -46,12 +46,15 @@ Function Run-RabbitMQ
             $env:RABBITMQ_CONFIG_FILE = $cfg
             $env:RABBITMQ_NODENAME = $node_name
             $env:RABBITMQ_NODE_PORT = $node_port
+            $env:LOG = 'debug'
             Write-Host "[INFO] running", $rmq_server_cmd
             & "$rmq_server_cmd"
         }
     }
     Start-Job -Verbose @jobArgs
 }
+
+$rmq_base_data_dir = Join-Path -Path $env:APPDATA -ChildPath 'RabbitMQ' | Join-Path -ChildPath 'db'
 
 for ($i = 0; $i -lt 3; $i++)
 {
@@ -61,6 +64,7 @@ for ($i = 0; $i -lt 3; $i++)
     {
         $rmq_node_port = 5672 + $i
         Write-Host "[INFO] configuring server '$rmq_node_name'"
+        Remove-Item -Verbose -Recurse -Force "$rmq_base_data_dir\$rmq_node_name*"
         $rmq_conf_in = Join-Path -Path $rmq_base -ChildPath 'rabbitmq.conf.in'
         $rmq_conf_out = Join-Path -Path $rmq_base -ChildPath 'rabbitmq.conf'
         (Get-Content -Raw -Path $rmq_conf_in) -Replace '@@CURDIR@@', $curdir_with_slashes | Set-Content -Path $rmq_conf_out
