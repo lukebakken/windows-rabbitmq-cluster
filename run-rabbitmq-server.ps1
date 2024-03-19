@@ -7,7 +7,7 @@ Write-Host "[INFO] script directory: $curdir"
 
 [Net.ServicePointManager]::SecurityProtocol = [Net.ServicePointManager]::SecurityProtocol -bor 'Tls12'
 
-New-Variable -Name rmq_version -Option Constant -Value '3.13.0'
+New-Variable -Name rmq_version -Option Constant -Value '3.12.13'
 
 $rmq_dir = Join-Path -Path $curdir -ChildPath "rabbitmq_server-$rmq_version"
 $rmq_sbin = Join-Path -Path $rmq_dir -ChildPath 'sbin'
