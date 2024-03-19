@@ -19,10 +19,10 @@ listeners.ssl.default = 5773
 management.tcp.port = 15673
 management.ssl.port = 15773
 
-management.ssl.certfile   = @@CURDIR@@/certs/server_rmq1_certificate.pem
-management.ssl.keyfile    = @@CURDIR@@/certs/server_rmq1_key.pem
-management.ssl.cacertfile = @@CURDIR@@/certs/ca_certificate.pem
+management.ssl.certfile   = @@CURDIR@@/certs Евгений/server_rmq1_certificate.pem
+management.ssl.keyfile    = @@CURDIR@@/certs Евгений/server_rmq1_key.pem
+management.ssl.cacertfile = @@CURDIR@@/certs Евгений/ca_certificate.pem
 
-ssl_options.certfile   = @@CURDIR@@/certs/server_rmq1_certificate.pem
-ssl_options.keyfile    = @@CURDIR@@/certs/server_rmq1_key.pem
-ssl_options.cacertfile = @@CURDIR@@/certs/ca_certificate.pem
+ssl_options.certfile   = @@CURDIR@@/certs Евгений/server_rmq1_certificate.pem
+ssl_options.keyfile    = @@CURDIR@@/certs Евгений/server_rmq1_key.pem
+ssl_options.cacertfile = @@CURDIR@@/certs Евгений/ca_certificate.pem

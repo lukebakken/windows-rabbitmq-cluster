@@ -19,10 +19,10 @@ listeners.ssl.default = 5774
 management.tcp.port = 15674
 management.ssl.port = 15774
 
-management.ssl.certfile   = @@CURDIR@@/certs/server_rmq2_certificate.pem
-management.ssl.keyfile    = @@CURDIR@@/certs/server_rmq2_key.pem
-management.ssl.cacertfile = @@CURDIR@@/certs/ca_certificate.pem
+management.ssl.certfile   = @@CURDIR@@/certs Евгений/server_rmq2_certificate.pem
+management.ssl.keyfile    = @@CURDIR@@/certs Евгений/server_rmq2_key.pem
+management.ssl.cacertfile = @@CURDIR@@/certs Евгений/ca_certificate.pem
 
-ssl_options.certfile   = @@CURDIR@@/certs/server_rmq2_certificate.pem
-ssl_options.keyfile    = @@CURDIR@@/certs/server_rmq2_key.pem
-ssl_options.cacertfile = @@CURDIR@@/certs/ca_certificate.pem
+ssl_options.certfile   = @@CURDIR@@/certs Евгений/server_rmq2_certificate.pem
+ssl_options.keyfile    = @@CURDIR@@/certs Евгений/server_rmq2_key.pem
+ssl_options.cacertfile = @@CURDIR@@/certs Евгений/ca_certificate.pem

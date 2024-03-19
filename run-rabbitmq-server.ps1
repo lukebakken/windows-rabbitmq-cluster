@@ -46,6 +46,7 @@ Function Run-RabbitMQ
             $env:RABBITMQ_NODENAME = $node_name
             $env:RABBITMQ_NODE_PORT = $node_port
             $env:LOG = 'debug'
+            [console]::InputEncoding = [console]::OutputEncoding = New-Object System.Text.UTF8Encoding
             & "$rmq_server_cmd"
         }
     }
@@ -53,14 +54,16 @@ Function Run-RabbitMQ
     Start-Job -Verbose @jobArgs
 }
 
-$rmq_env_conf_bat_in = Join-Path -Path $curdir -ChildPath 'rabbitmq-env-conf.bat.in'
+[console]::InputEncoding = [console]::OutputEncoding = New-Object System.Text.UTF8Encoding
+
+$rmq_env_conf_bat_in = Join-Path -Path $curdir -ChildPath 'rabbitmq-env-conf.txt'
 $rmq_base_data_dir = Join-Path -Path $env:APPDATA -ChildPath 'RabbitMQ' | Join-Path -ChildPath 'db'
 $erl_ssl_path = $(erl -noinput -eval "io:format(""~s"",[filename:dirname(code:which(inet_tls_dist))])" -s init stop)
 
 for ($i = 0; $i -lt 3; $i++)
 {
     $rmq_node_name = "rmq$i"
-    $rmq_base = Join-Path -Path $curdir -ChildPath $rmq_node_name
+    $rmq_base = Join-Path -Path $curdir -ChildPath "$rmq_node_name Евгений"
 
     if (Test-Path -LiteralPath $rmq_base)
     {

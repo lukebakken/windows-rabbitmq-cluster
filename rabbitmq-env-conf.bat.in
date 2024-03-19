@@ -1,3 +1,0 @@
-@echo off
-set SERVER_ADDITIONAL_ERL_ARGS=-pa @@ERL_SSL_PATH@@ -proto_dist inet_tls -ssl_dist_optfile @@CURDIR@@/@@NODENAME@@/inter_node_tls.config
-set CTL_ERL_ARGS=-pa @@ERL_SSL_PATH@@ -proto_dist inet_tls -ssl_dist_optfile @@CURDIR@@/@@NODENAME@@/inter_node_tls.config
