@@ -60,7 +60,7 @@ $erl_ssl_path = $(erl -noinput -eval "io:format(""~s"",[filename:dirname(code:wh
 for ($i = 0; $i -lt 3; $i++)
 {
     $rmq_node_name = "rmq$i"
-    $rmq_base = Join-Path -Path $curdir -ChildPath $rmq_node_name
+    $rmq_base = Join-Path -Path $curdir -ChildPath "$rmq_node_name dir"
 
     if (Test-Path -LiteralPath $rmq_base)
     {
