@@ -5,6 +5,7 @@ Set-StrictMode -Version 2.0
 New-Variable -Name curdir  -Option Constant -Value $PSScriptRoot
 Write-Host "[INFO] script directory: $curdir"
 
+[console]::InputEncoding = [console]::OutputEncoding = New-Object System.Text.UTF8Encoding
 [Net.ServicePointManager]::SecurityProtocol = [Net.ServicePointManager]::SecurityProtocol -bor 'Tls12'
 
 New-Variable -Name rmq_version -Option Constant -Value '3.13.0'
@@ -16,7 +17,7 @@ $rmq_zip_file = Join-Path -Path $curdir -ChildPath "rabbitmq-server-windows-$rmq
 $rmq_plugins_cmd = Join-Path -Path $rmq_sbin -ChildPath 'rabbitmq-plugins.bat'
 $curdir_with_slashes = $curdir -Replace '\\','/'
 
-New-Variable -Name rmq_server_cmd -Option Constant -Scope Script  `
+New-Variable -Name rmq_server_cmd -Option Constant `
     -Value (Join-Path -Path $rmq_sbin -ChildPath 'rabbitmq-server.bat')
 
 if (!(Test-Path -Path $rmq_dir))
@@ -53,8 +54,6 @@ Function Run-RabbitMQ
 
     Start-Job -Verbose @jobArgs
 }
-
-[console]::InputEncoding = [console]::OutputEncoding = New-Object System.Text.UTF8Encoding
 
 $rmq_env_conf_bat_in = Join-Path -Path $curdir -ChildPath 'rabbitmq-env-conf.txt'
 $rmq_base_data_dir = Join-Path -Path $env:APPDATA -ChildPath 'RabbitMQ' | Join-Path -ChildPath 'db'
