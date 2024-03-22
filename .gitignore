@@ -12,3 +12,4 @@ obj/
 *.zip
 
 rabbitmq_server*/
+rmq[0-2] data*/

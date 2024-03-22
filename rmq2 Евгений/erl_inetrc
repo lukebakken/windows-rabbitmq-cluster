@@ -1,0 +1,12 @@
+%% coding: utf-8
+%% -- ERLANG INET CONFIGURATION FILE --
+%% read the hosts file
+{file, hosts, "C:/Windows/system32/drivers/etc/hosts"}.
+
+%% add a particular host
+{host, {127,0,0,1}, ["rmq0"]}.
+{host, {127,0,0,1}, ["rmq1"]}.
+{host, {127,0,0,1}, ["rmq2"]}.
+
+%% specify lookup method
+{lookup, [file, native, dns]}.

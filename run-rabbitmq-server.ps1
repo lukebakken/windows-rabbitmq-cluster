@@ -25,7 +25,6 @@ if (!(Test-Path -Path $rmq_dir))
 {
     Invoke-WebRequest -Verbose -UseBasicParsing -Uri $rmq_download_url -OutFile $rmq_zip_file
     Expand-Archive -Path $rmq_zip_file -DestinationPath $curdir
-    & $rmq_plugins_cmd enable rabbitmq_management
 }
 
 Function Run-RabbitMQ
@@ -56,6 +55,7 @@ Function Run-RabbitMQ
     Start-Job -Verbose @jobArgs
 }
 
+$erl_inetrc_in = Join-Path -Path $curdir -ChildPath 'erl_inetrc'
 $rmq_env_conf_bat_in = Join-Path -Path $curdir -ChildPath 'rabbitmq-env-conf.txt'
 $rmq_base_data_dir = Join-Path -Path $env:APPDATA -ChildPath 'RabbitMQ' | Join-Path -ChildPath 'db'
 $erl_ssl_path = $(erl -noinput -eval "io:format(""~s"",[filename:dirname(code:which(inet_tls_dist))])" -s init stop)
@@ -76,6 +76,7 @@ for ($i = 0; $i -lt 3; $i++)
         $inter_node_tls_conf_in = Join-Path -Path $rmq_base -ChildPath 'inter_node_tls.config.in'
         $inter_node_tls_conf_out = Join-Path -Path $rmq_base -ChildPath 'inter_node_tls.config'
         $rmq_env_conf_bat_out = Join-Path -Path $rmq_base -ChildPath 'rabbitmq-env-conf.bat'
+        $erl_inetrc_out = Join-Path -Path $rmq_base -ChildPath 'erl_inetrc'
 
         (Get-Content -Raw -LiteralPath $rmq_conf_in) -Replace '@@CURDIR@@', $curdir_with_slashes `
             -Replace '@@COMPUTERNAME@@', $env:COMPUTERNAME | Set-Content -LiteralPath $rmq_conf_out
@@ -86,6 +87,8 @@ for ($i = 0; $i -lt 3; $i++)
         (Get-Content -Raw -LiteralPath $rmq_env_conf_bat_in) -Replace '@@CURDIR@@', $curdir_with_slashes `
             -Replace '@@ERL_SSL_PATH@@', $erl_ssl_path `
             -Replace '@@NODENAME@@', $rmq_node_name | Set-Content -LiteralPath $rmq_env_conf_bat_out
+
+        Copy-Item -Force -LiteralPath $erl_inetrc_in -Destination $erl_inetrc_out
 
         Run-RabbitMQ -ServerCmd $rmq_server_cmd `
             -NodeName $rmq_node_name `
