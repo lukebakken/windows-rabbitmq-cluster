@@ -1,3 +1,4 @@
+%% coding: utf-8
 [
     {server, [
         {cacertfile, "@@CURDIR@@/certs Евгений/ca_certificate.pem"},
