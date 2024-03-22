@@ -8,8 +8,8 @@ Write-Host "[INFO] script directory: $curdir"
 [console]::InputEncoding = [console]::OutputEncoding = New-Object System.Text.UTF8Encoding
 [Net.ServicePointManager]::SecurityProtocol = [Net.ServicePointManager]::SecurityProtocol -bor 'Tls12'
 
-# New-Variable -Name rmq_version -Option Constant -Value '3.13.0+85.g0e57264'
-New-Variable -Name rmq_version -Option Constant -Value '3.13.0'
+New-Variable -Name rmq_version -Option Constant -Value '3.13.0+85.g0e57264'
+# New-Variable -Name rmq_version -Option Constant -Value '3.13.0'
 
 $rmq_dir = Join-Path -Path $curdir -ChildPath "rabbitmq_server-$rmq_version"
 $rmq_sbin = Join-Path -Path $rmq_dir -ChildPath 'sbin'
